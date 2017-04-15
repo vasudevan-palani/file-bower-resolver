@@ -1,0 +1,14 @@
+{
+  "name": "test-package",
+  "main": "index.js",
+  "homepage": """",
+  "description": "Test package",
+  "keywords": [
+    "test"
+  ],
+  "authors": [
+    "Vasudevan PALANI"
+  ],
+  "license": "MIT",
+  "private": true
+}

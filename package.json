@@ -1,0 +1,36 @@
+{
+  "name": "file-bower-resolver",
+  "version": "0.1.0",
+  "description": "Bower resolver for package tgz and corresponding gulp tasks to package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasudevan-palani/file-bower-resolver.git"
+  },
+  "keywords": [
+    "gulp",
+    "bower-resolver",
+    "package",
+    "tgz.bower",
+    "resolver",
+    "file",
+    "directory",
+    "dir"
+  ],
+  "author": "Vasudevan PALANI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vasudevan-palani/file-bower-resolver/issues"
+  },
+  "homepage": "https://github.com/vasudevan-palani/file-bower-resolver#readme",
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "fs": "0.0.1-security",
+    "gulp": "^3.9.1",
+    "tar.gz": "^1.0.5",
+    "yargs": "^7.1.0"
+  }
+}
