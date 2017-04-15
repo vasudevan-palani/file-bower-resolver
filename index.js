@@ -2,50 +2,70 @@ var fs = require('fs');
 var os = require('os');
 var path = require('path');
 var targz = require('tar.gz');
+var tmp = require('tmp');
 
-var repo = "./repo";
-var components = "./components";
+function extract(src, dst) {
+    return targz().extract(src, dst);
+}
 
 module.exports = function resolver(bower) {
+
+  var repo = bower.config.fileRepo?bower.config.fileRepo:".";
 
     return {
         // determine whether this resolver can handle a particular "source"
         // i.e. a `bower install source` will first run this match method
         match: function(source) {
-            fs.readdir("./repo", (err, files) => {
-                files.forEach(file => {
-                  if(file.startsWith(source)){
-                    return true;
-                  }
-                });
+
+            var retval = false;
+            fs.readdirSync(repo).map(function(item) {
+                if (item.startsWith(source)) {
+                    retval = true;
+                }
             });
-            return false;
+            return retval;
         },
 
+        releases : function(source){
+
+          var releasesArray = [];
+          // Go through all the files
+          //
+          fs.readdirSync(repo).map(function(item) {
+              if (item.startsWith(source)) {
+                // Get the version
+                //
+                var match = item.match(/^.*-([\d\.]+).tar.gz/);
+                if(match){
+                  releasesArray.push({
+                    release : match[1],
+                    target : match[1],
+                    version : match [1]
+                  });
+                }
+              }
+          });
+          return releasesArray;
+        },
         // download the bower component files
         fetch: function(endpoint, cached) {
 
-            // 0. log inputs for clarity
-            bower.logger.info('file-bower-resolver', 'endpoint: ' + JSON.stringify(endpoint));
+
+            if (cached.version === endpoint.target) return;
 
             // 1. create a temporary directory
-            var tempDir = os.tmpdir() + path.sep + 'file-bower-resolver-' + new Date().getTime();
-            bower.logger.info('file-bower-resolver', 'created temp dir: ' + tempDir);
-            fs.mkdirSync(tempDir);
+            var tempDir = tmp.dirSync().name;
 
             // 2. populate temporary directory with component files
 
             // Streams
-            var read = targz().createReadStream(repo+'/'+endpoint.name+"-"+endpoint.target+".tar.gz");;
-            var write = targz().createWriteStream(tempDir);
+            return extract(repo + "/" + endpoint.name + "-"+ endpoint.target+".tar.gz", tempDir).then(function() {
+                return {
+                    tempPath: tempDir + "/" + endpoint.name,
+                    removeIgnores: true
+                };
+            });
 
-            read.pipe(write);
-
-            // 3. return expected interface
-            return {
-                tempPath: tempDir,
-                removeIgnores: true
-            };
         }
     };
 };
