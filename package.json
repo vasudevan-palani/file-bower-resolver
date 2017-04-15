@@ -29,5 +29,10 @@
   "dependencies": {
     "tar.gz": "^1.0.5",
     "tmp": "0.0.31"
+  },
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "gulp": "^3.9.1",
+    "yargs": "^7.1.0"
   }
 }
