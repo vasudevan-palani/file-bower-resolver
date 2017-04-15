@@ -1,6 +1,6 @@
 {
   "name": "file-bower-resolver",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Bower resolver for package tgz",
   "main": "index.js",
   "scripts": {
